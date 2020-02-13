@@ -11,7 +11,7 @@ resource "aws_vpc" "heeled_vpc" {
 resource "aws_subnet" "heeled_subnet" {
   vpc_id     = "${aws_vpc.heeled_vpc.id}"
   cidr_block = "10.0.1.0/24"
-  depends_on = ["aws_internet_gateway.gw"]
+  depends_on = ["aws_internet_gateway.internet_gateway"]
 
 }
 
@@ -50,7 +50,7 @@ resource "aws_security_group" "allow_tcp" {
 resource "aws_instance" "heeled_instance" {
   ami = "${var.ami_id}"
   instance_type = "t2.micro"
-  key_name      = "${aws_key_pair.deployer.key_name}"
+  key_name      = "${aws_key_pair.ssh-user.key_name}"
   security_groups = ["${aws_security_group.allow_tcp.id}"]
   subnet_id = "${aws_subnet.heeled_subnet.id}"
 
